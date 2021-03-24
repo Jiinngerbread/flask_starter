@@ -8,9 +8,9 @@ class PropertyListingForm(FlaskForm):
 
     title = StringField('Property Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    roomNum = IntegerField('No. of Rooms', validators=[DataRequired()])
-    bRoomNum = IntegerField('No. of Bedrooms', validators=[DataRequired()])
-    price = DecimalField('Price', validators=[DataRequired()])
+    roomNum = IntegerField('No. of Rooms', validators=[DataRequired()],  render_kw="placeholder": 3)
+    bRoomNum = IntegerField('No. of Bedrooms', validators=[DataRequired()], render_kw="placeholder": 2 )
+    price = DecimalField('Price', validators=[DataRequired()],  render_kw="placeholder": 15000000.0)
     propertyType = SelectField('Property type', choices=[('Apartment', 'Apartment'), ('House', 'House')] )
-    location = StringField('Location', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()],  render_kw="placeholder": "10 Waterloo Rd")
     photo = FileField('Photos', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png'])])

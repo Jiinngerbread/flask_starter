@@ -7,6 +7,10 @@ This file creates your application.
 
 from app import app
 from flask import render_template, request, redirect, url_for
+from app.forms import PropertyListingForm
+from werkzeug.utils import secure_filename
+from flask import send_from_directory
+import os
 
 
 ###
@@ -27,7 +31,29 @@ def about():
 @app.route('/property')
 def property():
     """Render the website's property listing page"""
-    listing = 
+    form = PropertyListingForm()
+
+    if request.method == "POST" and form.validate_on_submit():
+            title=form.title.data
+            description=form.description.data
+            numberBeds=form.roomNum.data
+            numberRooms=form.bRoomNum.data
+            price=form.price.data
+            propertyType=form.propertyType.data
+            location=form.location.data
+            picture=form.photo.data
+
+            # Handling Database Procedure
+            filename = secure_filename(picture.filename)
+            
+            picture.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+            UserProperty= UserProperty(title, description, roomNum, bRoomNum, price, propertyType, location, filename)
+            db.session.add(UserProperty)
+            db.session.commit()
+            flash("Property successfully listed", category="success")
+
+            return redirect(url_for('properties'))
+    return render_template("property.html", form=form)
 
 
 ###
